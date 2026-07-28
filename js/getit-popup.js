@@ -46,7 +46,7 @@
     if(!e.target || !e.target.closest) return;
     var a = e.target.closest('a[href="' + triggerHref + '"]');
     if(!a) return;
-    if((a.textContent || '').indexOf('Get TMO Rider On') === -1) return;
+    if((a.textContent || '').indexOf('Google Play') === -1) return;
     e.preventDefault();
     openPopup();
   }, true);
