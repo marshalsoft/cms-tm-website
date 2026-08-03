@@ -37,6 +37,7 @@
 <meta name="twitter:description" content="transportation,logistics, Rent Vehicles.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
+<script src="https://cdn.tailwindcss.com"></script>
 <style>/* vietnamese */
 @font-face {
   font-family: 'MuseoModerno';
@@ -966,8 +967,20 @@
   const API='https://api.cmstaxiandmotor.com/api/posts/published?page=5';
   const palette=['#F6C54A','#3CB371','#F4834A','#1F6A4F','#FFB454'];
   const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  function fmt(iso){ if(!iso) return ''; const d=new Date(iso); if(Number.isNaN(+d)) return ''; return months[d.getMonth()]+' '+d.getFullYear(); }
-  function strip(html){ if(!html) return ''; const t=document.createElement('div'); t.innerHTML=html; return (t.textContent||t.innerText||'').replace(/\s+/g,' ').trim(); }
+  function fmt(iso){ 
+    if(!iso) return ''; 
+    const d=new Date(iso); 
+    if(Number.isNaN(+d)) return ''; 
+    return months[d.getMonth()]+' '+d.getFullYear(); 
+  }
+
+  function strip(html){ 
+    if(!html) return ''; 
+    const t=document.createElement('div'); 
+    t.innerHTML=html; 
+    return t.innerHTML; 
+  }
+
   function $(id){ return document.getElementById(id); }
   function show(id, v){ const n=$(id); if(!n) return; n.style.display = v?'block':'none'; }
   let __featuredIndex = 0;
@@ -1127,7 +1140,10 @@
     H('blogFeaturedViews',     n=> n.textContent=p.views?p.views+' views':'');
     H('blogFeaturedTitleHref', n=> n.href=p.href||'#');
     H('blogFeaturedTitle',     n=> n.textContent=p.title||'Untitled');
-    H('blogFeaturedExcerpt',   n=>{ n.textContent = (p.fullExcerpt||p.excerpt||''); });
+    H('blogFeaturedExcerpt',   n=>{
+      n.href = p.href||'#';
+      n.innerHTML = (p.fullExcerpt||p.excerpt||'');
+    });
     H('blogFeaturedAvatar',    n=>{ if(p.avatar) n.src=p.avatar; else try{ n.removeAttribute('src'); }catch(e){} });
     H('blogFeaturedAuthor',    n=> n.textContent=p.author||'CMS T&M');
   }
@@ -1167,7 +1183,7 @@
         const cover=p.coverImage||''; const category=p.category||(p.tags&&p.tags[0])||'News';
         const author=(p.author&&p.author.name)||'CMS T&M'; const avatar=(p.author&&p.author.avatarUrl)||'';
         const fullExcerpt = strip(p.content);
-        const excerpt = fullExcerpt.length>180 ? fullExcerpt.slice(0,177)+'...' : fullExcerpt;
+        const excerpt = fullExcerpt.length > 180 ? fullExcerpt.slice(0,177)+'...' : fullExcerpt;
         const item = {
           tag:category, date:fmt(p.createdAt||p.updatedAt), bar:palette[i%palette.length],
           title:p.title||'Untitled',
